@@ -1,0 +1,24 @@
+<!doctype html><html lang="fr"><head><meta charset="utf-8">
+<link rel="stylesheet" href="lib/polices.css"><link rel="stylesheet" href="lib/papole.css">
+<style>img.pi{display:inline-block;width:1.3em;height:1.3em;vertical-align:-.3em;object-fit:contain}.gem:has(img.gemI){background:none!important;padding:0!important;filter:drop-shadow(0 calc(.3*var(--u,1cqw)) calc(.5*var(--u,1cqw)) #000a)}img.gemI{display:block;height:calc(5*var(--u,1cqw));width:auto}
+html,body{margin:0;background:transparent}#z{width:540px;padding:0;margin:0}.slot{margin:0}.card{transform:none!important}</style>
+</head><body><div id="z" class="lpZoom stage"></div>
+<script src="lib/donnees_cartes.js"></script>
+<script>const DATA=window.PAPOLE_CARDS;DATA.cards.forEach((c,i)=>c.i=i+1);
+const fmt=n=>n.toLocaleString("fr-FR").replace(/ | /g," ");
+const esc=s=>String(s).replace(/ ([;:!?»])/g," $1").replace(/« /g,"« ").replace(/[&<>"']/g,ch=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]));
+window.DemoStore=window.DemoStore||{devOn:()=>false,load:()=>({})};</script>
+<script src="_promo_trio_lib.js"></script>
+<script src="_promo_card_fn.js"></script>
+<script>
+const q=new URLSearchParams(location.search);
+const by=n=>DATA.cards.find(x=>x.n===n);
+const sel={P:by(q.get('p')),E:by(q.get('e')),O:by(q.get('o'))};
+const f=TrioFusion.make(sel);
+document.getElementById('z').innerHTML=card(f);
+document.querySelector(".card").style.setProperty("--k",q.get("k")||".86");document.title=f.n;
+// ajustement promo : réduire titre et texte jusqu'à ce que rien ne déborde (après chargement des polices)
+const fit=(box,sel,min)=>{const b=document.querySelector(box),e=document.querySelector(sel);if(!b||!e)return;let fs=parseFloat(getComputedStyle(e).fontSize);const over=()=>b.scrollHeight>b.clientHeight+1||e.scrollHeight>e.clientHeight+1||e.scrollWidth>e.clientWidth+1;while(over()&&fs>min){fs-=0.5;e.style.fontSize=fs+"px";e.style.lineHeight="1.02";}};
+document.fonts.ready.then(()=>{fit(".card .hd",".card .name",11);fit(".card .txt",".card .txt",10);window.__FIT=1;});
+window.__FUSION={n:f.n,t:f.t,q:f.q,d:f.d,m:f.m,p:f.p,r:f.r};
+</script></body></html>

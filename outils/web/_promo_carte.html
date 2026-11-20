@@ -1,0 +1,16 @@
+<!doctype html><html lang="fr"><head><meta charset="utf-8">
+<link rel="stylesheet" href="lib/polices.css"><link rel="stylesheet" href="lib/papole.css">
+<style>img.pi{display:inline-block;width:1.3em;height:1.3em;vertical-align:-.3em;object-fit:contain}.gem:has(img.gemI){background:none!important;padding:0!important;filter:drop-shadow(0 calc(.3*var(--u,1cqw)) calc(.5*var(--u,1cqw)) #000a)}img.gemI{display:block;height:calc(5*var(--u,1cqw));width:auto}
+html,body{margin:0;background:transparent}#z{width:540px;padding:0;margin:0}.slot{margin:0}.card{transform:none!important}</style>
+</head><body><div id="z" class="lpZoom stage"></div>
+<script src="lib/donnees_cartes.js"></script>
+<script>const DATA=window.PAPOLE_CARDS;DATA.cards.forEach((c,i)=>c.i=i);
+const fmt=n=>n.toLocaleString("fr-FR").replace(/ | /g," ");
+const esc=s=>String(s).replace(/ ([;:!?»])/g," $1").replace(/« /g,"« ").replace(/[&<>"']/g,ch=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]));</script>
+<script src="_promo_card_fn.js"></script>
+<script>
+const q=new URLSearchParams(location.search);const n=q.get('n');const holo=q.get('holo');
+const c=DATA.cards.find(x=>x.n===n);document.getElementById('z').innerHTML=card(c);
+if(holo){const el=document.querySelector(".card");el.classList.add('holoS');el.style.setProperty('--hp',holo+'% 0');}
+document.querySelector(".card").style.setProperty("--k",q.get("k")||".86");document.title=n;
+</script></body></html>

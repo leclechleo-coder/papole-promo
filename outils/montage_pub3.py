@@ -52,6 +52,19 @@ BOITES = {239: (144, 603, 336, 735), 240: (108, 568, 365, 755), 241: (70, 529, 4
 plans = []  # (liste d'images 480×854, son)
 # 1. Les deux cartes posées face cachée (plan de 11 s, 0 à 2,1 s). Ici viendront les mains de Léo.
 plans.append(([img("f11", i) for i in range(1, 52)], son("pub3_11s.mp4", 0, 51 / FPS)))
+# 1 bis. Les mains de Léo (« Pa-po-lé », puis les deux V) : mains.mp4 s'il est là, sinon 3,5 s d'écran noir avec « PAPOLÉ ! ».
+if os.path.exists(f"{D}/mains.mp4"):
+    os.makedirs(f"{D}/fm", exist_ok=True)
+    subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", f"{D}/mains.mp4", "-vf", f"fps={FPS},scale=480:854",
+                    f"{D}/fm/%03d.png"], check=True)
+    fm = sorted(os.listdir(f"{D}/fm"))
+    plans.append(([Image.open(f"{D}/fm/{x}").convert("RGB") for x in fm], son("mains.mp4", 0, len(fm) / FPS)))
+else:
+    noir = Image.new("RGB", (480, 854), (0, 0, 0))
+    sp = np.zeros(int(3.5 * SR), dtype=np.float32)
+    pp = son("papole.mp3", 0, 2.09)
+    sp[int(0.4 * SR):int(0.4 * SR) + len(pp)] = pp
+    plans.append(([noir] * int(3.5 * FPS), sp))
 # 2. DIMI retourne le Cher Dirigeant (test card_c, 0,1 à 3,0 s).
 plans.append(([img("fc", i) for i in range(3, 73)], son("pub3_test4s_c.mp4", 2 / FPS, 70 / FPS)))
 # 3. DIMI parle (plan de 11 s, 2,1 à 6,0 s).

@@ -1,6 +1,6 @@
 # Montage de la pub 3 « 2005 » (DIMI contre YANIS) : python3 montage_pub3.py <dossier de travail> <sortie.mp4> [runway|voix]
-# Le dossier de travail contient : f11/ (images du plan de 11 s), fc/ (retournement de card_c), f/ (retournement de card_a),
-# les sons pub3_11s.mp4, pub3_test4s.mp4, pub3_test4s_c.mp4, pub3_voix_dimi.mp3, pub3_voix_yanis.mp3, carton.mp4 (anim2.py)
+# Le dossier de travail contient : f11/ (images du plan de 11 s), fc/ (retournement de card_c), fy/ (YANIS retourne card_a),
+# les sons pub3_11s.mp4, pub3_main_yanis.mp4, pub3_test4s_c.mp4, pub3_voix_dimi.mp3, pub3_voix_yanis.mp3, carton.mp4 (anim2.py)
 # et annonceur.mp3 (voix « Papolé ! On va pas polémiquer ! »).
 # « voix » : les répliques sont les fichiers de voix d'origine posés sur l'image ; « runway » : le son généré par Runway.
 import os, sys, subprocess, numpy as np
@@ -73,10 +73,8 @@ if MODE == "voix":
     v = np.pad(son("pub3_voix_dimi.mp3", 0, 3.36), (int(0.3 * SR), 0))[:len(s3)]
     s3 = np.zeros_like(s3); s3[:len(v)] = v
 plans.append(([img("f11", i) for i in range(52, 145)], s3))
-# 4. Le moustachu apparaît (test card_a) : le dos seul, puis la face seule (la main du test est celle de DIMI : coupée).
-dos = [img("f", 1)] * 10
-face = [img("f", i) for i in range(46, 49)] + [img("f", 48)] * 21
-plans.append((dos + face, np.concatenate([son("pub3_test4s.mp4", 0, 10 / FPS), son("pub3_test4s.mp4", 0.95, 24 / FPS)])))
+# 4. YANIS retourne le moustachu (prise du 20 nov. 22 h 01, main droite, poignet éponge), 0,4 à 3,4 s.
+plans.append(([img("fy", i) for i in range(10, 82)], son("pub3_main_yanis.mp4", 9 / FPS, 72 / FPS)))
 # 5. YANIS parle (plan de 11 s, 6,0 à 8,0 s), puis 6. gros plan de DIMI qui se fige (8,0 à 9,1 s).
 s5 = son("pub3_11s.mp4", 144 / FPS, 49 / FPS)
 s6 = son("pub3_11s.mp4", 193 / FPS, 26 / FPS)
